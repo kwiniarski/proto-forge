@@ -1,11 +1,11 @@
 {
   "name": "proto-forge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Small library for instrumenting Object.defineProperties and creating reusable prototypes.",
   "main": "lib/proto-forge.js",
   "scripts": {
     "test": "mocha --compilers js:babel/register -R min tests/",
-    "prepublish": "babel -d .build/src/ lib/"
+    "prepublish": "babel -d lib/ src/"
   },
   "repository": {
     "type": "git",
