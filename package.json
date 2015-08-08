@@ -1,0 +1,36 @@
+{
+  "name": "proto-forge",
+  "version": "1.0.0",
+  "description": "Small library for instrumenting Object.defineProperties and creating reusable prototypes.",
+  "main": "lib/proto-forge.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register -R min tests/",
+    "prepublish": "babel -d .build/src/ lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwiniarski/proto-forge.git"
+  },
+  "keywords": [
+    "object",
+    "prototype",
+    "factory"
+  ],
+  "files": [
+    "lib/"
+  ],
+  "author": "Krzysztof Winiarski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwiniarski/proto-forge/issues"
+  },
+  "devDependencies": {
+    "babel": "latest",
+    "mocha": "latest",
+    "chai": "latest"
+  },
+  "homepage": "https://github.com/kwiniarski/proto-forge#readme",
+  "dependencies": {
+    "object-assign": "^3.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+# WebStorm project settings folder
+.idea/
+
+# npm stuff
+node_modules/
+npm-debug.log
+
+# project files
+lib/
