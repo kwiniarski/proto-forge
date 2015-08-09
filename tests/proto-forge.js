@@ -46,6 +46,33 @@ describe('accessor methods', () => {
     proto.name = 'TEST';
     expect(proto.name).to.equal('test');
   });
+
+  it('should not lowercase first letter if next letter is also uppercase', () => {
+    proto = forge({
+      getXValue() {}
+    });
+    expect(proto).to.have.property('XValue');
+  });
+});
+
+describe('constant', () => {
+  let proto;
+  it('should be added as not configurable', () => {
+    proto = forge({
+      CONSTANT: 'value'
+    });
+    expect(() => {
+      delete proto.CONSTANT;
+    }).to.throw();
+  });
+  it('should be added as not writable', () => {
+    proto = forge({
+      CONSTANT: 'value'
+    });
+    expect(() => {
+      proto.CONSTANT = null;
+    }).to.throw();
+  })
 });
 
 describe('duplicated properties in definitions', () => {
@@ -59,4 +86,51 @@ describe('duplicated properties in definitions', () => {
       });
     }).to.throw();
   });
+});
+
+describe('extending proto', () => {
+
+  beforeEach(function () {
+    this.proto1 = forge({
+      _id: 1,
+      value: 1,
+      getName() { return '1'; },
+      data: null,
+      CONST: 'proto1',
+      ONE: true
+    });
+    this.proto2 = forge({
+      _id: 2,
+      value: 2,
+      name: '2',
+      meta: null,
+      CONST: 'proto2',
+      TWO: true
+    }, this.proto1);
+    this.proto3 = forge({
+      CONST: 'proto3',
+      THREE: true
+    }, this.proto2);
+  });
+
+  it('should skip not enumerable and not configurable/writable properties', function () {
+    expect(this.proto2).to.have.property('_id', 2); // not reassigned by proto1
+    expect(this.proto3).to.not.have.property('_id'); // not assigned form proto2
+  });
+
+  it('should assign not writable properties but not reassign them', function () {
+    expect(this.proto2).to.have.property('CONST', 'proto2'); // not reassigned by proto1
+    expect(this.proto3).to.have.property('CONST', 'proto3'); // not reassigned by proto2
+
+    expect(this.proto2).to.have.property('ONE', true); // assigned
+    expect(this.proto3).to.have.property('ONE', true); // assigned
+  });
+
+  it('should overwrite enumerable and configurable properties with the same name', function () {
+    expect(this.proto2).to.have.property('value', 1);
+    expect(this.proto2).to.have.property('name', '1');
+    expect(this.proto2).to.have.property('data', null);
+    expect(this.proto2).to.have.property('meta', null);
+  });
+
 });
